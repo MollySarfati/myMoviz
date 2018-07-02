@@ -2,7 +2,8 @@
 
 #root {
   text-decoration: none;
-  background-color: hsl(0, 0%, 89%);
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 #root a{
@@ -12,8 +13,9 @@
 }
 
 #card{
-  margin: 10px;
   position:relative;
+  margin-bottom: 20px;
+
 }
 
 svg{

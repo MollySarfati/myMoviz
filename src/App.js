@@ -7,9 +7,26 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons'
 
 
 class App extends Component {
+  //Header
+  constructor(props) {
+    super(props);
+
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      popoverOpen: false
+    };
+  }
+  //fin header
+
+  toggle() {
+    this.setState({popoverOpen: !this.state.popoverOpen});
+  }
   render() {
 
         var movieData = [
+              {image: './malefique.jpg', name: 'Malefique', desc: 'Poussée par la vengeance et une volonté farouche deprotéger les terres qu elle préside, Maléfique place ...'},
+              {image: './pi.jpg', name: ' L Odyssée de Pi', desc: 'Après que leur bateau est victime dune violente tempête etcoule au fond du Pacifique, un adolescent et un tigre du Bengale...'},
+              {image: './tintin.jpg', name: 'Les Aventures de Tintin', desc: 'Parce qu il achète la maquette d un bateau appelé la Licorne, Tintin, un jeune reporter, se retrouve entraîné dans une fantastique aventure...'},
               {image: './malefique.jpg', name: 'Malefique', desc: 'Poussée par la vengeance et une volonté farouche deprotéger les terres qu elle préside, Maléfique place ...'},
               {image: './pi.jpg', name: ' L Odyssée de Pi', desc: 'Après que leur bateau est victime dune violente tempête etcoule au fond du Pacifique, un adolescent et un tigre du Bengale...'},
               {image: './tintin.jpg', name: 'Les Aventures de Tintin', desc: 'Parce qu il achète la maquette d un bateau appelé la Licorne, Tintin, un jeune reporter, se retrouve entraîné dans une fantastique aventure...'}
@@ -28,9 +45,46 @@ class App extends Component {
 
 return (
   <Container>
-    <Row>
-      <Header totalLike={totalLike} lastlike={movieLast}/>
-    </Row>
+    {/* //Header Component */}
+    <Container>
+      <Row>
+        <Col xs="1">
+          <img src="logo.png"/>
+        </Col>
+
+          <Nav>
+            <Col xs="5">
+              <NavItem>
+                <NavLink href="#">Last Releases</NavLink>
+              </NavItem>
+            </Col>
+
+          <Col xs="4">
+            <NavItem>
+              <NavLink href="#">My Movies</NavLink>
+            </NavItem>
+          </Col>
+
+          <Col xs="3">
+          <NavItem>
+            <NavLink href="#">
+              <Button id="Popover1" onClick={this.toggle}>
+  {this.props.totalLike} {totalLike} Films
+              </Button>
+              <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
+              <PopoverHeader>Derniers films ajoutés</PopoverHeader>
+              <PopoverBody>{this.props.lastlike}{movieLast}</PopoverBody>
+              </Popover>
+            </NavLink>
+          </NavItem>
+          </Col>
+
+          </Nav>
+
+      </Row>
+    </Container>
+    {/* //fin header return component */}
+      {/* <Header totalLike={totalLike} lastlike={movieLast}/> */}
     <Row>
        {filmList}
     </Row>
@@ -39,65 +93,65 @@ return (
   }
 }
 
-
-
-class Header extends Component {
-      constructor(props) {
-        super(props);
-
-        this.toggle = this.toggle.bind(this);
-        this.state = {
-          popoverOpen: false
-        };
-      }
-
-      toggle() {
-        this.setState({popoverOpen: !this.state.popoverOpen});
-      }
-
-
-  render() {
-    return (
-      <Container>
-        <Row>
-          <Col xs="1">
-            <img src="logo.png"/>
-          </Col>
-
-            <Nav>
-              <Col xs="5">
-                <NavItem>
-                  <NavLink href="#">Last Releases</NavLink>
-                </NavItem>
-              </Col>
-
-            <Col xs="4">
-              <NavItem>
-                <NavLink href="#">My Movies</NavLink>
-              </NavItem>
-            </Col>
-
-            <Col xs="3">
-            <NavItem>
-              <NavLink href="#">
-                <Button id="Popover1" onClick={this.toggle}>
-    {this.props.totalLike} Films
-                </Button>
-                <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
-                <PopoverHeader>Derniers films ajoutés</PopoverHeader>
-                <PopoverBody>{this.props.lastlike}</PopoverBody>
-                </Popover>
-              </NavLink>
-            </NavItem>
-            </Col>
-
-            </Nav>
-
-        </Row>
-      </Container>
-    );
-  }
-}
+//
+//
+// class Header extends Component {
+//       // constructor(props) {
+//       //   super(props);
+//       //
+//       //   this.toggle = this.toggle.bind(this);
+//       //   this.state = {
+//       //     popoverOpen: false
+//       //   };
+//       // }
+//       //
+//       // toggle() {
+//       //   this.setState({popoverOpen: !this.state.popoverOpen});
+//       // }
+//
+//
+//   render() {
+//     return (
+//       <Container>
+//         <Row>
+//           <Col xs="1">
+//             <img src="logo.png"/>
+//           </Col>
+//
+//             <Nav>
+//               <Col xs="5">
+//                 <NavItem>
+//                   <NavLink href="#">Last Releases</NavLink>
+//                 </NavItem>
+//               </Col>
+//
+//             <Col xs="4">
+//               <NavItem>
+//                 <NavLink href="#">My Movies</NavLink>
+//               </NavItem>
+//             </Col>
+//
+//             <Col xs="3">
+//             <NavItem>
+//               <NavLink href="#">
+//                 <Button id="Popover1" onClick={this.toggle}>
+//     {this.props.totalLike} Films
+//                 </Button>
+//                 <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
+//                 <PopoverHeader>Derniers films ajoutés</PopoverHeader>
+//                 <PopoverBody>{this.props.lastlike}</PopoverBody>
+//                 </Popover>
+//               </NavLink>
+//             </NavItem>
+//             </Col>
+//
+//             </Nav>
+//
+//         </Row>
+//       </Container>
+//     );
+//   }
+// }
 
 
 class Movie extends Component {
