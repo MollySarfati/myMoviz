@@ -1,178 +1,205 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
-import { Popover, PopoverHeader, PopoverBody, Card, Container, Row, Col, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button, Nav, NavItem, NavLink, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle,  } from 'reactstrap';
+import { Popover, PopoverBody, Card, Container, Row, Col, CardImg, CardText, CardBody, CardTitle, Button, Nav, NavItem, NavLink  } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 
 
 class App extends Component {
-  //Header
-  constructor(props) {
-    super(props);
 
+  constructor() {
+    super();
+    this.handleClick = this.handleClick.bind(this);
+    this.handleClickLikeOff = this.handleClickLikeOff.bind(this);
+    this.handleClickLikeOn = this.handleClickLikeOn.bind(this);
     this.toggle = this.toggle.bind(this);
     this.state = {
-      popoverOpen: false
+      popoverOpen: false,
+      viewOnlyLike: false,
+      moviesCount: 0,
+      moviesNameList: []
     };
   }
-  //fin header
 
   toggle() {
-    this.setState({popoverOpen: !this.state.popoverOpen});
+    this.setState({
+      popoverOpen: !this.state.popoverOpen
+    });
   }
+
+  handleClickLikeOff() {
+    this.setState({viewOnlyLike: false});
+  }
+
+  handleClickLikeOn() {
+    this.setState({viewOnlyLike: true});
+  }
+
+  handleClick(isLike, name) {
+    console.log(isLike);
+    var moviesNameListCopy = [...this.state.moviesNameList];
+
+    if (isLike == true) {
+      moviesNameListCopy.push(name);
+      this.setState({
+        moviesCount: this.state.moviesCount + 1,
+        moviesNameList: moviesNameListCopy
+      })
+    } else {
+      var index = moviesNameListCopy.indexOf(name);
+      moviesNameListCopy.splice(index, 1);
+      this.setState({
+        moviesCount: this.state.moviesCount - 1,
+        moviesNameList: moviesNameListCopy
+      })
+    }
+  }
+
   render() {
 
-        var movieData = [
-              {image: './malefique.jpg', name: 'Malefique', desc: 'Poussée par la vengeance et une volonté farouche deprotéger les terres qu elle préside, Maléfique place ...'},
-              {image: './pi.jpg', name: ' L Odyssée de Pi', desc: 'Après que leur bateau est victime dune violente tempête etcoule au fond du Pacifique, un adolescent et un tigre du Bengale...'},
-              {image: './tintin.jpg', name: 'Les Aventures de Tintin', desc: 'Parce qu il achète la maquette d un bateau appelé la Licorne, Tintin, un jeune reporter, se retrouve entraîné dans une fantastique aventure...'},
-              {image: './malefique.jpg', name: 'Malefique', desc: 'Poussée par la vengeance et une volonté farouche deprotéger les terres qu elle préside, Maléfique place ...'},
-              {image: './pi.jpg', name: ' L Odyssée de Pi', desc: 'Après que leur bateau est victime dune violente tempête etcoule au fond du Pacifique, un adolescent et un tigre du Bengale...'},
-              {image: './tintin.jpg', name: 'Les Aventures de Tintin', desc: 'Parce qu il achète la maquette d un bateau appelé la Licorne, Tintin, un jeune reporter, se retrouve entraîné dans une fantastique aventure...'}
-            ];
-        var filmList = movieData.map(function(movie) {
-                  return <Movie movieName={movie.name} movieImage={movie.image} movieDesc={movie.desc}/>;
-                });
+    var moviesData = [
+      {
+        img: './malefique.jpg',
+        name: 'Malefique',
+        desc: 'Poussée par la vengeance et une volonté farouche deprotéger les terres qu elle préside, Maléfique place ...',
+        etat: false
+      }, {
+        img: './pi.jpg',
+        name: ' L Odyssée de Pi',
+        desc: 'Après que leur bateau est victime dune violente tempête etcoule au fond du Pacifique, un adolescent et un tigre du Bengale...',
+        etat: false
+      }, {
+        img: './tintin.jpg',
+        name: 'Les Aventures de Tintin',
+        desc: 'Parce qu il achète la maquette d un bateau appelé la Licorne, Tintin, un jeune reporter, se retrouve entraîné dans une fantastique aventure...',
+        etat: false
+      }, {
+        img: './malefique.jpg',
+        name: 'Malefique',
+        desc: 'Poussée par la vengeance et une volonté farouche deprotéger les terres qu elle préside, Maléfique place ...',
+        etat: false
+      }, {
+        img: './pi.jpg',
+        name: ' L Odyssée de Pi',
+        desc: 'Après que leur bateau est victime dune violente tempête etcoule au fond du Pacifique, un adolescent et un tigre du Bengale...',
+        etat: false
+      }, {
+        img: './tintin.jpg',
+        name: 'Les Aventures de Tintin',
+        desc: 'Parce qu il achète la maquette d un bateau appelé la Licorne, Tintin, un jeune reporter, se retrouve entraîné dans une fantastique aventure...',
+        etat: false
+      }
+    ];
 
-        var movieNameList=["A", "B", "C","Malefique,","L Odyssée de Pi," ,"Les Aventures de Tintin,"];
-        movieNameList=movieNameList.reverse()
-        var totalLike=movieNameList.length;
+    var ctx = this;
 
-        var movieLast= movieNameList.slice(0,3);
+    var movieList = moviesData.map(function(movie, i) {
+      return (<Movie key={i} handleClickParent={ctx.handleClick} displayOnlyLike={ctx.state.viewOnlyLike} movieName={movie.name} movieImage={movie.img} movieDesc={movie.desc} movieNumber={i}/>);
+    });
 
+    var lastName = "";
 
+    var moviesNameListCopy = [...this.state.moviesNameList];
 
-return (
-  <Container>
-    {/* //Header Component */}
-    <Container>
+    if (moviesNameListCopy.length > 0) {
+      lastName = moviesNameListCopy.pop();
+    }
+    if (moviesNameListCopy.length > 0) {
+      lastName = lastName + ', ' + moviesNameListCopy.pop();
+    }
+    if (moviesNameListCopy.length > 0) {
+      lastName = lastName + ', ' + moviesNameListCopy.pop();
+    }
+    if (moviesNameListCopy.length > 0) {
+      lastName = lastName + '...';
+    }
+
+    return (<Container className="col-12">
+
       <Row>
-        <Col xs="1">
-          <img src="logo.png"/>
-        </Col>
-
+        <Col>
           <Nav>
-            <Col xs="5">
-              <NavItem>
-                <NavLink href="#">Last Releases</NavLink>
-              </NavItem>
-            </Col>
-
-          <Col xs="4">
             <NavItem>
-              <NavLink href="#">My Movies</NavLink>
+              <NavLink href="#"><img src="logo.png" alt='logo'/></NavLink>
             </NavItem>
-          </Col>
-
-          <Col xs="3">
-          <NavItem>
-            <NavLink href="#">
-              <Button id="Popover1" onClick={this.toggle}>
-  {this.props.totalLike} {totalLike} Films
-              </Button>
-              <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
-              <PopoverHeader>Derniers films ajoutés</PopoverHeader>
-              <PopoverBody>{this.props.lastlike}{movieLast}</PopoverBody>
-              </Popover>
-            </NavLink>
-          </NavItem>
-          </Col>
-
+            <NavItem>
+              <NavLink onClick={this.handleClickLikeOff} href="#">
+                Last releases</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink onClick={this.handleClickLikeOn} href="#">My movies</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="#">
+                <Button id="Popover1" onClick={this.toggle}>
+                  {this.state.moviesCount}
+                  Movie
+                </Button>
+                <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
+                  <PopoverBody>{lastName}</PopoverBody>
+                </Popover>
+              </NavLink>
+            </NavItem>
           </Nav>
-
+        </Col>
       </Row>
-    </Container>
-    {/* //fin header return component */}
-      {/* <Header totalLike={totalLike} lastlike={movieLast}/> */}
-    <Row>
-       {filmList}
-    </Row>
-  </Container>
-    );
+
+      <Row>
+        {movieList}
+      </Row>
+
+    </Container>)
   }
 }
 
-//
-//
-// class Header extends Component {
-//       // constructor(props) {
-//       //   super(props);
-//       //
-//       //   this.toggle = this.toggle.bind(this);
-//       //   this.state = {
-//       //     popoverOpen: false
-//       //   };
-//       // }
-//       //
-//       // toggle() {
-//       //   this.setState({popoverOpen: !this.state.popoverOpen});
-//       // }
-//
-//
-//   render() {
-//     return (
-//       <Container>
-//         <Row>
-//           <Col xs="1">
-//             <img src="logo.png"/>
-//           </Col>
-//
-//             <Nav>
-//               <Col xs="5">
-//                 <NavItem>
-//                   <NavLink href="#">Last Releases</NavLink>
-//                 </NavItem>
-//               </Col>
-//
-//             <Col xs="4">
-//               <NavItem>
-//                 <NavLink href="#">My Movies</NavLink>
-//               </NavItem>
-//             </Col>
-//
-//             <Col xs="3">
-//             <NavItem>
-//               <NavLink href="#">
-//                 <Button id="Popover1" onClick={this.toggle}>
-//     {this.props.totalLike} Films
-//                 </Button>
-//                 <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
-//                 <PopoverHeader>Derniers films ajoutés</PopoverHeader>
-//                 <PopoverBody>{this.props.lastlike}</PopoverBody>
-//                 </Popover>
-//               </NavLink>
-//             </NavItem>
-//             </Col>
-//
-//             </Nav>
-//
-//         </Row>
-//       </Container>
-//     );
-//   }
-// }
-
-
 class Movie extends Component {
+
+  constructor() {
+    super();
+    this.handleClick = this.handleClick.bind(this);
+    this.state = {
+      like: false
+    };
+  }
+
+  handleClick() {
+    var isLike = !this.state.like;
+    var movieName = this.props.movieName;
+    this.setState({like: isLike});
+    this.props.handleClickParent(isLike, movieName);
+  }
+
   render() {
-    return(
-        <Col xs="12" md="4">
+    var colorHeart;
+    if (this.state.like === true) {
+      colorHeart = {
+        color: "#FF5B53",
+        cursor: "Pointer"
+      }
+    }
 
-         <div id="card">
-           <Card>
-           <FontAwesomeIcon icon={faHeart} />
-           <img src={this.props.movieImage}/>
-             <CardBody>
-               <CardTitle>{this.props.movieName}</CardTitle>
-               <CardText>{this.props.movieDesc}</CardText>
-               <Button>Button</Button>
-             </CardBody>
-            </Card>
-          </div>
+    var isDisplay;
+    if (this.props.displayOnlyLike == true && this.state.like == false) {
 
-        </Col>
-      );
+      isDisplay = {
+        display: "none"
+      }
+    }
+    return (<Col xs="12" md="4" style={isDisplay}>
+
+      <div id="card">
+        <Card className="Card">
+          <CardImg src={this.props.movieImage}/>
+          <CardBody>
+            <FontAwesomeIcon style={colorHeart} onClick={this.handleClick} icon={faHeart}/>
+            <CardTitle>{this.props.movieName}</CardTitle>
+            <CardText>{this.props.movieDesc}</CardText>
+          </CardBody>
+        </Card>
+      </div>
+
+    </Col>);
   }
 }
 export default App;

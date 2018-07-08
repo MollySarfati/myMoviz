@@ -20,8 +20,21 @@
 
 svg{
   position: absolute;
-  color: red;
+  color: white;
   top: 20px;
   size: 30px;
   left: 10px;
+}
+
+.btn-primary {
+  background-color: #23aa4e;
+  border-color: #177d37;
+}
+
+#example {
+  margin: 3rem;
+}
+
+.customContainer {
+  border: 1px solid black;
 }
